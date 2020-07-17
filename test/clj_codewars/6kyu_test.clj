@@ -295,3 +295,9 @@
          (longest-cons ["it","wkppv","ixoyx", "3452", "zzzzzzzzzzzz"] 15)))
   (is (= ""
          (longest-cons ["it","wkppv","ixoyx", "3452", "zzzzzzzzzzzz"] 0))))
+
+(deftest pyramid-tests
+  (is (= (pyramid 0) []))
+  (is (= (pyramid 1) [[1]]))
+  (is (= (pyramid 2) [[1] [1 1]]))
+  (is (= (pyramid 3) [[1] [1 1] [1 1 1 ]])))
