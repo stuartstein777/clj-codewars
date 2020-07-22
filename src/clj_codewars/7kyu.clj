@@ -1488,3 +1488,43 @@
                     (map int))]
     (= (range (first sorted) (inc (last sorted))) sorted)))
 ;; -------------------------------------------END---
+
+;; Longest Vowel Chain
+; The vowel substrings in the word codewarriors are o,e,a,io. The longest of these has a length of 2. Given a
+; lowercase string that has alphabetic characters only (both vowels and consonants) and no spaces, return the length of
+; the longest vowel substring. Vowels are any of aeiou.
+
+(defn is-vowel [c]
+  (not (nil? (#{\a \e \i \o \u} c))))
+
+(defn solve [s]
+  (->> (partition-by is-vowel s)
+       (filter #(true? (is-vowel (first %))))
+       (map count)
+       (apply max)))
+;; -------------------------------------------END---
+
+;; String prefix and suffix
+; In this Kata, you will be given a string and your task will be to return the length of the longest prefix that is
+; also a suffix. A prefix is the start of a string while the suffix is the end of a string. For instance, the prefixes
+; of the string "abcd" are ["a","ab","abc"]. The suffixes are ["bcd", "cd", "d"]. You should not overlap the prefix and
+; suffix.
+;
+; for example:
+; solve("abcd") = 0, because no prefix == suffix.
+; solve("abcda") = 1, because the longest prefix which == suffix is "a".
+; solve("abcdabc") = 3. Longest prefix which == suffix is "abc".
+; solve("aaaa") = 2. Longest prefix which == suffix is "aa". You should not overlap the prefix and suffix
+; solve("aa") = 1. You should not overlap the prefix and suffix.
+; solve("a") = 0. You should not overlap the prefix and suffix.
+; All strings will be lowercase and string lengths are 1 <= length <= 500
+
+(defn solve [s]
+  (let [post-range (range 0 (inc (quot (count s) 2)))
+        suffix-range (range (quot (count s) 2) (count s))
+        prefixes (set (map #(subs s 0 %) post-range))
+        suffixes (set (map #(subs s %) suffix-range))
+        intersections (set/intersection prefixes suffixes)]
+    (cond (empty? intersections) 0
+          :else (apply max (map count intersections)))))
+;; -------------------------------------------END---
