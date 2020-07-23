@@ -33,7 +33,7 @@
     (is (= (evaporator 10 10 10) 22))))
 
 (defn dotest [n ans]
-  (is (= (solve n) ans)))
+  (is (= (solve-alternate-capitalization n) ans)))
 
 (deftest Example-tests
   (testing "Basic Tests"

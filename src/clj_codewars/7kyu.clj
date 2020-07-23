@@ -95,7 +95,7 @@
 ;
 ; The input will be a lowercase string with no spaces.
 
-(defn solve [s]
+(defn solve-alternate-capitalization [s]
   [(apply str (map-indexed (fn [i c] (if (odd? i) c (str/upper-case c))) s))
    (apply str (map-indexed (fn [i c] (if (even? i) c (str/upper-case c))) s))])
 ;; -------------------------------------------END---
