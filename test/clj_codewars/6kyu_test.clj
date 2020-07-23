@@ -314,3 +314,30 @@
   (testing "Edge cases"
     (is (= [] (twos-difference [])))
     (is (= [] (twos-difference [1 4 7 10])))))
+
+(deftest which-are-in-test
+  (is (= ["love" "olp" "string"] (in-array ["olp" "love" "string" "xyz"] ["ulove" "alove" "holp" "sholp" "vfmstring"])))
+  (is (= ["duplicates"] (in-array ["duplicates" "duplicates"] ["duplicates"])))
+  (is (= [] (in-array ["abc" "zyz"] ["zdf" "jfk" "hfi"]))))
+
+(deftest highest-rank-an-array
+  (is (= (highest-rank [12 10 8 12 7 6 4 10 12]) 12))
+  (is (= (highest-rank [12, 10, 8, 12, 7, 6, 4, 10, 10]) 10))
+  (is (= (highest-rank [12, 10, 8, 12, 7, 6, 4, 10, 10, 12, 12]) 12))
+  (is (= (highest-rank [12, 10, 8, 12, 7, 6, 4, 10, 10, 12, 12, 14, 14, 14, 14]) 14)))
+
+(deftest encrypt-this-tests
+  (is (= "72olle" (encrypt-this "Hello")))
+  (is (= "103doo" (encrypt-this "good")))
+  (is (= "104olle 119drlo" (encrypt-this "hello world")))
+  (is (= "65 119esi 111dl 111lw 108dvei 105n 97n 111ka" (encrypt-this "A wise old owl lived in an oak")))
+  (is (= "84eh 109ero 104e 115wa 116eh 108sse 104e 115eokp" (encrypt-this "The more he saw the less he spoke")))
+  (is (= "84eh 108sse 104e 115eokp 116eh 109ero 104e 104dare" (encrypt-this "The less he spoke the more he heard")))
+  (is (= "87yh 99na 119e 110to 97ll 98e 108eki 116tah 119esi 111dl 98dri" (encrypt-this "Why can we not all be like that wise old bird")))
+  (is (= "84kanh 121uo 80roti 102ro 97ll 121ruo 104ple" (encrypt-this "Thank you Piotr for all your help"))))
+
+(deftest playing-with-passphrases-tests
+  (is (= (play-pass "I LOVE YOU!!!" 1) "!!!vPz fWpM J"))
+  (is (= (play-pass "BORN IN 2015!" 1) "!4897 Oj oSpC"))
+  (is (= (play-pass "MY GRANMA CAME FROM NY ON THE 23RD OF APRIL 2015" 2)
+         "4897 NkTrC Hq fT67 GjV Pq aP OqTh gOcE CoPcTi aO")))
