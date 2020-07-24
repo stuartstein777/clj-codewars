@@ -1,6 +1,8 @@
 (ns clj-codewars.7kyu-test
   (:require [clojure.test :refer :all]
-            [clj-codewars.7kyu :refer :all]))
+            [clj-codewars.7kyu :refer :all]
+            [clj-codewars.7kyu-2 :refer :all]
+            [clj-codewars.7kyu-3 :refer :all]))
 
 (defn do-test [fn param exp]
   (is (= (fn param) exp)))
@@ -612,6 +614,4 @@
   (is (= (capitalize "abcdef" [1 2 5 100]) "aBCdeF"))
   (is (= (capitalize "codewars" [1 3 5 50]) "cOdEwArs"))
   (is (= (capitalize "abracadabra" [2 6 9 10]) "abRacaDabRA"))
-  (is (= (capitalize "indexinglessons" [0]) "Indexinglessons"))
-
-  )
+  (is (= (capitalize "indexinglessons" [0]) "Indexinglessons")))

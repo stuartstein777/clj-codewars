@@ -1,6 +1,7 @@
 (ns clj-codewars.8kyu-test
   (:require [clojure.test :refer :all]
-            [clj-codewars.8kyu :refer :all]))
+            [clj-codewars.8kyu :refer :all]
+            [clj-codewars.8kyu-2 :refer :all]))
 
 (deftest number-to-string-test-example
   (is (= (number-to-string 67) "67")))
