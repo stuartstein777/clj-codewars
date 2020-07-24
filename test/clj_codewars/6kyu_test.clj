@@ -1,6 +1,7 @@
 (ns clj-codewars.6kyu-test
   (:require [clojure.test :refer :all]
-            [clj-codewars.6kyu :refer :all]))
+            [clj-codewars.6kyu :refer :all]
+            [clj-codewars.6kyu-2 :refer :all]))
 
 ; Sample function:
 (defn id [n] (do n))
@@ -341,3 +342,17 @@
   (is (= (play-pass "BORN IN 2015!" 1) "!4897 Oj oSpC"))
   (is (= (play-pass "MY GRANMA CAME FROM NY ON THE 23RD OF APRIL 2015" 2)
          "4897 NkTrC Hq fT67 GjV Pq aP OqTh gOcE CoPcTi aO")))
+
+(deftest range-parser-tests
+  (are [inp exp] (= (range-parser inp) exp)
+                 "2"      [2]
+                 "1-10"   [1 2 3 4 5 6 7 8 9 10]
+                 "5-10"   [5 6 7 8 9 10]
+                 "1-10,3" [1 2 3 4 5 6 7 8 9 10 3]
+                 "1-10:5" [1 6]
+                 "2-3"    [2 3]
+                 "2-3:2"  [2]
+                 "0-5:5"  [0 5]
+                 "2-3:2,2-3:2" [2 2]
+                 "0-1, 0-2:1,3-5:2" [0 1 0 1 2 3 5]
+                 "1-10,14, 20-25:2" [1 2 3 4 5 6 7 8 9 10 14 20 22 24]))
