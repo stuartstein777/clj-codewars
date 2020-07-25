@@ -29,3 +29,9 @@
 ;; swap two items in a list
 (defn swap [v i1 i2]
   (assoc v i2 (v i1) i1 (v i2)))
+
+;; greatest common divisor
+(defn gcd [a b]
+  (if (zero? b)
+    a
+    (recur b (mod a b))))

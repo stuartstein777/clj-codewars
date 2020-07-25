@@ -8,6 +8,7 @@
   (is (= true (is-vowel "i")))
   (is (= true (is-vowel "o")))
   (is (= true (is-vowel "u"))))
+    ()
 
 (deftest other-letters-are-not-vowels
   (is (= false (is-vowel "b")))
@@ -26,3 +27,7 @@
 
 (deftest swap-test
   (is (= (swap [:o :# :#] 0 1) [:# :o :#])))
+
+(deftest gcd-tests
+  (is (= 5 (gcd 25 30)))
+  (is (= 1 (gcd 19 25))))

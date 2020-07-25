@@ -620,3 +620,42 @@
 (deftest unlucky-days-tests
   (is (= (unlucky-days 2015) 3))
   (is (= (unlucky-days 1986) 1)))
+
+(deftest recursion-101-tests
+  (is (= (recursion-101 6 19) '(6 7)))
+  (is (= (recursion-101 2 1) '(0 1)))
+  (is (= (recursion-101 22 5) '(0 1)))
+  (is (= (recursion-101 2 10) '(2 2)))
+  (is (= (recursion-101 8796203 7556) '(1019 1442)))
+  (is (= (recursion-101 19394 19394) '(19394 19394))))
+
+(deftest common-substrings-tests
+  (is (= true (common-substrings "Something" "Home")))
+  (is (= false (common-substrings "Something" "Fun"))))
+
+(deftest most-valuable-character-tests
+  (testing "single char " (is (= (most-valuable-character "a") \a)))
+  (testing "aa" (is (= \a (most-valuable-character "aa"))))
+  (testing "bcd" (is (= \b (most-valuable-character "bcd"))))
+  (testing "axyzxyz" (is (= \x (most-valuable-character "axyzxyz"))))
+  (testing "dcbadcba" (is (= \a (most-valuable-character "dcbadcba"))))
+  (testing "aabccc" (is (= \c (most-valuable-character "aabccc")))))
+
+(deftest a-rule-of-divisibility-by-seven-tests
+  (testing "Basic tests"
+    (is (= (seven 1603) [7, 2]))
+    (is (= (seven 371) [35, 1]))
+    (is (= (seven 483) [42, 1]))))
+
+(deftest gcd-sum-tests
+  (is (= (gcd-sum 6 3) [3 3]))
+  (is (= (gcd-sum 8 2) [2 6]))
+  (is (= (gcd-sum 10 3) -1))
+  (is (= (gcd-sum 12 4) [4 8]))
+  (is (= (gcd-sum 12 5) -1))
+  (is (= (gcd-sum 50 10) [10 40]))
+  (is (= (gcd-sum 50 4) -1))
+  (is (= (gcd-sum 10 5) [5 5]))
+  (is (= (gcd-sum 100 5) [5 95]))
+  (is (= (gcd-sum 1000 5) [5 995])))
+
