@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [clj-codewars.7kyu :refer :all]
             [clj-codewars.7kyu-2 :refer :all]
-            [clj-codewars.7kyu-3 :refer :all]))
+            [clj-codewars.7kyu-3 :refer :all]
+            [clj-codewars.7KYU-4 :refer :all]))
 
 (defn do-test [fn param exp]
   (is (= (fn param) exp)))
@@ -615,3 +616,7 @@
   (is (= (capitalize "codewars" [1 3 5 50]) "cOdEwArs"))
   (is (= (capitalize "abracadabra" [2 6 9 10]) "abRacaDabRA"))
   (is (= (capitalize "indexinglessons" [0]) "Indexinglessons")))
+
+(deftest unlucky-days-tests
+  (is (= (unlucky-days 2015) 3))
+  (is (= (unlucky-days 1986) 1)))
