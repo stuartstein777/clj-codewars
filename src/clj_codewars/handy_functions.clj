@@ -40,8 +40,8 @@
 (defn leap-year? [year]
   (or (zero? (mod year 400)) (and (zero? (mod year 4)) (not (zero? (mod year 100))))))
 
-;; round to n decimal places
-(defn round [n]
+;; round down to n decimal places
+(defn round-down [n]
   (let [scale (Math/pow 10 2)]
     (/ (Math/round (- (* n scale) 0.5))
        scale)))

@@ -1,43 +1,7 @@
-(ns clj-codewars.5kyu-test
+(ns clj-codewars.5kyu-simple-assembler-interpreter-tests
   (:require [clojure.test :refer :all]
-            [clj-codewars.5kyu :refer :all]))
+            [clj-codewars.5kyu-simple-assembler-interpreter :refer :all]))
 
-(deftest pig-latin-example-test
-  (is (= (pig-it "Pig latin is cool") "igPay atinlay siay oolcay")))
-
-(deftest pig-latin-example-test
-  (is (= (pig-it "This is my string") "hisTay siay ymay tringsay")))
-
-(deftest simple-maximum-subarray-sum
-  (is (= (max-sequence [-2, 1, -3, 4, -1, 2, 1, -5, 4]) 6)))
-
-(defn dotest [f n exp]
-  (is (= (f n) exp)))
-
-(deftest a-test1
-  (testing "c (fixed 1)"
-    (dotest sections 1 1)
-    (dotest sections 4 4)
-    (dotest sections 4096576 160)
-    (dotest sections 2019 0)
-    (dotest sections 423128 0)
-    (dotest sections 1369 4)
-    (dotest sections 2999824 28)
-    (dotest sections 11710084 64)
-    (dotest sections 14830201 4)))
-
-(deftest a-test1-directions-reduction
-  (testing "Test 1"
-    (def ur ["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"])
-    (def vr ["WEST"])
-    (is (= (dirReduc ur) vr))))
-
-(deftest number-of-trailing-zeros-of-n
-  (is (= (zeros 0) 0) "Zero has 0 trailing zeros")
-  (is (= (zeros 6) 1))
-  (is (= (zeros 30) 7)))
-
-;; Simple assembler tests
 (deftest simple-assembler-mov-1
   (is (= (assembler ["mov x 5"]) {:x 5})))
 
@@ -95,14 +59,3 @@
 
 (deftest simple-assembler-jnz-basic-conditional-is-zero-y-is-reg
   (is (= 6 (asm-jnz {:x 0 :y 6} "x" "y" 5))))
-;;----------------------------END---
-
-;; Weight for weight Tests
-
-;; Weight for weight tests
-(deftest weight-for-weight-tests
-  (testing "weight for weight"
-    (is (= (order-weight "103 123 4444 99 2000") "2000 103 123 4444 99"))
-    (is (= (order-weight "2000 10003 1234000 44444444 9999 11 11 22 123") "11 11 2000 10003 22 123 1234000 44444444 9999"))))
-
-
