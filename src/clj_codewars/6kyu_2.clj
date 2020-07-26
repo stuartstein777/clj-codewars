@@ -98,7 +98,7 @@
 ;   Kata.MostFrequentDays(2860) == {"Thursday", "Friday"}
 
 (defn most-frequent-weekdays [year]
-  (let [dt (java.time.LocalDate/parse (str year "-01-01"))
+  (let [dt (java.time.LocalDate/of year 1 1)
         day-1 (-> dt (.getDayOfWeek) (str))
         day-2 (-> dt (.plusDays 1) (.getDayOfWeek) (str))]
     (if (or (zero? (mod year 400)) (and (zero? (mod year 4)) (not (zero? (mod year 100)))))
