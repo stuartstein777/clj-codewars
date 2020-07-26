@@ -31,3 +31,14 @@
 (deftest gcd-tests
   (is (= 5 (gcd 25 30)))
   (is (= 1 (gcd 19 25))))
+
+(deftest leap-year?-tests
+  (is (false? (leap-year? 1582)))
+  (is (true? (leap-year? 1736)))
+  (is (false? (leap-year? 1770)))
+  (is (true? (leap-year? 2000)))
+  (is (true? (leap-year? 1984)))
+  (is (false? (leap-year? 2001)))
+  (is (false? (leap-year? 2002)))
+  (is (false? (leap-year? 2003)))
+  (is (true? (leap-year? 2004))))

@@ -30,8 +30,15 @@
 (defn swap [v i1 i2]
   (assoc v i2 (v i1) i1 (v i2)))
 
-;; greatest common divisor
+;; greatest common divisor (Euclid's algorithm)
 (defn gcd [a b]
   (if (zero? b)
     a
     (recur b (mod a b))))
+
+(defn date [year month day]
+  (java.time.LocalDate/parse (str year "-" month "-" day)))
+
+;; calculate if year is a leap year.
+(defn leap-year? [year]
+  (or (zero? (mod year 400)) (and (zero? (mod year 4)) (not (zero? (mod year 100))))))
