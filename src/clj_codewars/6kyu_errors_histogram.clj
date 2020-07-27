@@ -37,9 +37,8 @@
 ;         x  2     **
 ;         z  31    *******************************
 
-
 (defn build-error [k v]
-  (str k "  " v (apply str (repeat (- 6 (count (str v))) " ")) (apply str (repeat v "*"))))
+  (str k "  " (format "%-6d" v) (apply str (repeat v "*"))))
 
 (defn hist [s]
   (str/join "\r" (->> (filter #(#{\u \w \x \z} %) s)
