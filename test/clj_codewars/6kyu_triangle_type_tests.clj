@@ -9,5 +9,4 @@
   (is (== (triangle-type 3 4 5) 2))                         ; Right
   (is (== (triangle-type 7 12 8) 3))                        ; Obtuse
   (is (= (triangle-type 105 100 6) 3))                      ; Obtuse
-  (is (= (triangle-type 65 55 33) 3))                       ; Obtuse
-  )
+  (is (= (triangle-type 65 55 33) 3)))                       ; Obtuse
