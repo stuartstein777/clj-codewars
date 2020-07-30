@@ -1,0 +1,9 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <ClojureCodeStyleSettings>{
+  :bouncing.core/bouncing 0
+  :cursive.formatting/align-binding-forms true
+  :maps-examples.messing/minutes 0
+}</ClojureCodeStyleSettings>
+  </code_scheme>
+</component>
