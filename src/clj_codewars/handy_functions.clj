@@ -36,6 +36,10 @@
     a
     (recur b (mod a b))))
 
+;; least-common-multiple
+(defn lcmu [a b]
+  (/ (* (Math/abs ^long a) (Math/abs ^long b)) (gcd a b)))
+
 ;; calculate if year is a leap year.
 (defn leap-year? [year]
   (or (zero? (mod year 400)) (and (zero? (mod year 4)) (not (zero? (mod year 100))))))

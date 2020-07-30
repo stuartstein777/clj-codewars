@@ -1,4 +1,5 @@
 (ns clj-codewars.6kyu-reducing-by-steps)
+(set! *warn-on-reflection* true)
 
 (defn gcdi [a b]
   (loop [a (Math/abs ^long a)
@@ -8,7 +9,7 @@
       (recur b (mod a b)))))
 
 (defn lcmu [a b]
-  (/ (* (Math/abs ^long a) (Math/abs ^long b)) (gcdi a b)))
+  (/ (* (Math/abs ^long a) (Math/abs ^long b)) (gcdi ^long a ^long b)))
 
 (defn som [x y]
   (+ x y))
