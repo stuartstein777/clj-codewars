@@ -1,7 +1,6 @@
 (ns clj-codewars.6kyu-positions-average-tests
   (:require [clojure.test :refer :all]
-            [clj-codewars.6kyu-positions-average :refer :all]
-            [clojure.string :as strg]))
+            [clj-codewars.6kyu-positions-average :refer :all]))
 
 
 (defn test-fuzzy [s exp]
