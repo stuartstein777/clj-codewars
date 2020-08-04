@@ -2,4 +2,4 @@
 
 Clojure solutions to codewar Katas
 
-URL:https://www.codewars.com/users/qmstuart/badges/large
+![codewars badge](https://www.codewars.com/users/qmstuart/badges/large)
