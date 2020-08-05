@@ -8,6 +8,9 @@
 (defn is-vowel [s]
   (not= nil (re-matches #"(?i)[aeiou]" s)))
 
+(defn is-vowel-char [c]
+  (not (nil? (#{\a \e \i \o \u \A \E \I \O \U} c))))
+
 ;; precise pow
 (defn int-pow [b ^long ex]
   (loop [acc 1 ex ex]
