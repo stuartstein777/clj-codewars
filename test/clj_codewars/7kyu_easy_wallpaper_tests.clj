@@ -11,5 +11,4 @@
     (test-assert(wallpaper 7.8, 2.9, 3.29), "sixteen")
     (test-assert(wallpaper 6.3, 5.8, 3.13), "seventeen")
     (test-assert(wallpaper 6.1, 6.7, 2.81), "sixteen")
-    (test-assert(wallpaper 0.0, 3.5, 3.0), "zero")
     (test-assert(wallpaper 4.0, 3.5, 3.0), "ten")))

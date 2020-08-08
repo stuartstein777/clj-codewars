@@ -53,7 +53,3 @@
            (Math/ceil)
            (int)
            (number->english)))))
-
-(wallpaper 0.0 0.4 2.42)
-
-(or (zero? 0.0) (zero? 0.4) (zero? 2.42))
