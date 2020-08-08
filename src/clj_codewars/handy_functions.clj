@@ -53,6 +53,12 @@
     (/ (Math/round (- (* n scale) 0.5))
        scale)))
 
+;; round n to places decimal places.
+(defn round [n places]
+  (let [scale (Math/pow 10 places)]
+    (/ (Math/round (* n scale))
+       scale)))
+
 ; say you want the first item from each list, then second item from each list etc...
 ; (amv [[:a :b :c] [:d :e :f] [:g :h :i]])
 ; => ([:a :d :g] [:b :e :h] [:c :f :i])
