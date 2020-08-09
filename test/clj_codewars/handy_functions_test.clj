@@ -43,3 +43,13 @@
   (is (false? (leap-year? 2003)))
   (is (true? (leap-year? 2004))))
 
+(defn bytes->num
+  [data]
+  (reduce bit-or (map-indexed (fn [i x] (bit-shift-left (bit-and x 0x0FF) (* 8 (- (count data) i 1)))) data)))
+
+(defn int->ipaddress-string [n]
+  (let [a (bit-and (bit-shift-right n 24) 0xFF)
+        b (bit-and (bit-shift-right n 16) 0xFF)
+        c (bit-and (bit-shift-right n 8) 0xFF)
+        d (bit-and n 0xFF)]
+    (str a "." b "." c "." d)))
