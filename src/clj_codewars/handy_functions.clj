@@ -64,3 +64,26 @@
 ; => ([:a :d :g] [:b :e :h] [:c :f :i])
 (defn amv [xs]
   (apply map vector xs))
+
+
+(defn bytes->num
+  [data]
+  (reduce bit-or (map-indexed (fn [i x] (bit-shift-left (bit-and x 0x0FF) (* 8 (- (count data) i 1)))) data)))
+
+(defn int->ipaddress-string [n]
+  (let [a (bit-and (bit-shift-right n 24) 0xFF)
+        b (bit-and (bit-shift-right n 16) 0xFF)
+        c (bit-and (bit-shift-right n 8) 0xFF)
+        d (bit-and n 0xFF)]
+    (str a "." b "." c "." d)))
+
+(defn reciprocal [n]
+  (if (ratio? n)
+    (/ (denominator n) (numerator n))
+    (/ 1 n)))
+
+(defn factorial [n]
+  ((fn [n r]
+     (if (= 1 n)
+       r
+       (recur (dec n) (* r n)))) n 1N))
