@@ -29,6 +29,9 @@
 (defn number->digits [num]
   (->> num str (map (comp read-string str))))
 
+(defn sum-of-digits [num]
+  (reduce + (number->digits num)))
+
 ;; swap two items in a list
 (defn swap [v i1 i2]
   (assoc v i2 (v i1) i1 (v i2)))

@@ -25,7 +25,7 @@
 ;productFib(800) # should return {34, 55, false},
 
 (defn product-fib [n]
-  ((fn [n a b]
+  ((fn [a b]
      (cond (= n (* a b)) [a b true]
            (> (* a b) n) [a b false]
-           :else (recur n b (+ a b)))) n 0N 1N))
+           :else (recur b (+ a b)))) 0N 1N))
