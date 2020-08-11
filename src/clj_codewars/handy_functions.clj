@@ -90,3 +90,13 @@
      (if (= 1 n)
        r
        (recur (dec n) (* r n)))) n 1N))
+
+(defn decimal->ratio [dec]
+  (loop [n dec
+         d 1
+         i 1]
+    (let [nxi (* n i)
+          dxi (* d i)]
+      (if (== (int (* n i)) (* n i))
+        (/ (int nxi) (int dxi))
+        (recur n d (* 10 i))))))
