@@ -11,7 +11,7 @@
    [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o]])
 
-(def example-map
+(def test-map
   [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
    [:o :o :w :w :w :w :w :w :w :w :w :w :w :w :o :o]
@@ -20,7 +20,7 @@
    [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
 
-(def example-map2
+(def test-map2
   [[:s :w :o :o :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :o]
    [:o :w :o :w :g :o :o :o :o :o :o :o :o :o :w :o]
@@ -143,16 +143,13 @@
         (let [current (get-next-cell-with-lowest-f-cost open)
               cell-summary-fn (partial build-node-summary start goal (:cell current))
               neighbours (get-neighbours dimensions (:cell current) closed open walls)]
-          (println open)
           (cond (= (:cell current) goal)
-                (do
-                  (println current)
-                  (pretty-print-path (get-path start goal (conj closed current))))
+                (pretty-print-path (get-path start goal (conj closed current)))
                 :else
                 (recur
                   (set (remove #(= (:cell %) (:cell current)) (into open (map cell-summary-fn neighbours))))
                   (conj closed current))))))))
 
-(comment (find-path example-map))
-(comment (find-path example-map2))
+(comment (find-path test-map))
+(comment (find-path test-map2))
 (comment (find-path bad-map))
