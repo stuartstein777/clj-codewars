@@ -11,6 +11,15 @@
    [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
 
+(def example-map2
+  [[:s :w :o :o :o :o :o :o :o :o :o :o :o :o :o :o]
+   [:o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :o]
+   [:o :w :o :w :g :o :o :o :o :o :o :o :o :o :w :o]
+   [:o :w :o :w :w :w :w :w :w :w :w :w :w :o :w :o]
+   [:o :w :o :o :o :o :o :o :o :o :o :o :o :o :w :o]
+   [:o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o]
+   [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
+
 ;;================================================================================================
 ;; Find the goal.
 ;; Example map (0,0) is top left corner:
@@ -29,7 +38,6 @@
 ;; Get the walls as a set.
 ;;================================================================================================
 (defn get-walls [m [max-y max-x]]
-  (println max-x " " max-y)
   (set (apply concat (for [y (range 0 max-y)]
                        (for [x (range 0 max-x)
                              :when (= :w (nth (nth m y) x))]
@@ -98,7 +106,7 @@
 ;;================================================================================================
 (defn get-path [start goal closed]
   ((fn [current path n]
-     (if (or (= start (:cell current)) (= n 25))
+     (if (= start (:cell current))
        (reverse path)
        (let [parent (first (filter #(= (:cell %) (:parent current)) closed))]
          (recur parent (conj path (:cell parent)) (inc n)))))
@@ -120,16 +128,20 @@
         goal            (find-in-map the-map :g)
         walls           (get-walls the-map dimensions)]
     (loop [open #{{:cell start :parent nil :g 0 :h 0 :f 0}}
-           closed     []]
-      (let [current (get-next-cell-with-lowest-f-cost open)
-            current-cell (:cell current)
-            cell-summary-fn (partial build-node-summary start goal current-cell)
-            neighbours (get-neighbours dimensions current-cell closed open walls)]
-        (if (or (= current-cell goal) (empty? open))
-          (pretty-print-path (get-path start goal (conj closed current)))
-          (recur
-            (set (remove #(= (:cell %) current-cell) (into open (map cell-summary-fn neighbours))))
-            (conj closed current)))))))
+           closed []]
+      (let [current         (get-next-cell-with-lowest-f-cost open)
+            cell-summary-fn (partial build-node-summary start goal (:cell current))
+            neighbours      (get-neighbours dimensions (:cell current) closed open walls)]
+        (println neighbours)
+        (cond (= (:cell current) goal)
+              (do
+                (println current)
+                (pretty-print-path (get-path start goal (conj closed current))))
+              (empty? open) (println "no path exists!")
+              :else
+              (recur
+                (set (remove #(= (:cell %) (:cell current)) (into open (map cell-summary-fn neighbours))))
+                (conj closed current)))))))
 
 (comment (find-path example-map))
-
+(comment (find-path example-map2))
