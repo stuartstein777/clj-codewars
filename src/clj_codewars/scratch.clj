@@ -2,6 +2,15 @@
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
+(def bad-map
+  [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
+   [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
+   [:o :o :w :w :w :w :w :w :w :w :w :w :w :w :o :o]
+   [:o :o :w :o :o :o :o :o :o :o :o :o :o :w :w :o]
+   [:o :o :w :w :w :w :w :w :o :o :o :o :o :w :w :o]
+   [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
+   [:o :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o]])
+
 (def example-map
   [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
@@ -129,19 +138,21 @@
         walls           (get-walls the-map dimensions)]
     (loop [open #{{:cell start :parent nil :g 0 :h 0 :f 0}}
            closed []]
-      (let [current         (get-next-cell-with-lowest-f-cost open)
-            cell-summary-fn (partial build-node-summary start goal (:cell current))
-            neighbours      (get-neighbours dimensions (:cell current) closed open walls)]
-        (println neighbours)
-        (cond (= (:cell current) goal)
-              (do
-                (println current)
-                (pretty-print-path (get-path start goal (conj closed current))))
-              (empty? open) (println "no path exists!")
-              :else
-              (recur
-                (set (remove #(= (:cell %) (:cell current)) (into open (map cell-summary-fn neighbours))))
-                (conj closed current)))))))
+      (if (empty? open)
+        (println "no path exists.")
+        (let [current (get-next-cell-with-lowest-f-cost open)
+              cell-summary-fn (partial build-node-summary start goal (:cell current))
+              neighbours (get-neighbours dimensions (:cell current) closed open walls)]
+          (println open)
+          (cond (= (:cell current) goal)
+                (do
+                  (println current)
+                  (pretty-print-path (get-path start goal (conj closed current))))
+                :else
+                (recur
+                  (set (remove #(= (:cell %) (:cell current)) (into open (map cell-summary-fn neighbours))))
+                  (conj closed current))))))))
 
 (comment (find-path example-map))
 (comment (find-path example-map2))
+(comment (find-path bad-map))
