@@ -68,9 +68,6 @@
 (defn coord-in-grid? [max-x max-y [x y]]
   (and (<= 0 x (dec max-x)) (<= 0 y (dec max-y))))
 
-(defn is-wall? [mp [x y]]
-  (= :o (nth (nth mp x) y)))
-
 ;;================================================================================================
 ;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), we want its neighbours.
 ;; A neighbour is either directly above, below, left or right. Not diagonal.
