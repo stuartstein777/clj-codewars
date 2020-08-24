@@ -69,9 +69,11 @@
   (and (<= 0 x (dec max-x)) (<= 0 y (dec max-y))))
 
 ;;================================================================================================
-;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), we want its neighbours.
+;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), the closed nodes, open nodes and walls
+;; we want its neighbours.
 ;; A neighbour is either directly above, below, left or right. Not diagonal.
-;; So map our deltas over xy then filter out the resulting points that are outwith the boundary.
+;; So map our deltas over xy then filter out the resulting points that are outwith the boundary, are already
+;; open, closed or walls.
 ;;================================================================================================
 (defn get-neighbours [[max-x max-y] xy closed open walls]
   (let [open (set (map :cell open))
