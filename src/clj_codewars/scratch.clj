@@ -2,6 +2,10 @@
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
+(defn debug [str x]
+  (println str x)
+  x)
+
 (def bad-map
   [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
@@ -29,6 +33,39 @@
    [:o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
 
+(def test-map3
+  [[:s :w :o :o :o :w :o :o :o :w :o :o :o :w :o :g]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :o :o :w :o :o :o :w :o :o :o :w :o :o :o :w]])
+
+(def test-map4
+  [[:s :w :o :o :o :w :o :o :o :w :o :o :o :w :o :g]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
+   [:o :o :o :w :o :o :o :w :o :o :o :w :o :o :o :w]])
+
+(def test-map5
+  [[:w :w :w :w :w :w :w :w :o :o :o :o :o :o :o :w]
+   [:w :w :w :w :w :w :w :w :g :w :o :o :w :o :o :w]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :s :w]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
+
+;;================================================================================================
+;; Get the dimensions of the map
+;;================================================================================================
+(defn get-dimensions [map]
+  [(count map)(count (first map))])
+
 ;;================================================================================================
 ;; Find the goal.
 ;; Example map (0,0) is top left corner:
@@ -53,10 +90,14 @@
                          [y x])))))
 
 ;;================================================================================================
-;; Get the dimensions of the map
+;; Get information about the map into a hash-map
 ;;================================================================================================
-(defn get-dimensions [map]
-  [(count map)(count (first map))])
+(defn get-map-info [m]
+  (let [dimensions (get-dimensions m)]
+    {:dimensions dimensions
+     :start      (find-in-map m :s)
+     :goal       (find-in-map m :g)
+     :walls      (get-walls m dimensions)}))
 
 ;;================================================================================================
 ;; Given a dimension of max-x * max-y, we want to determine if x and y are within this range.
@@ -69,19 +110,13 @@
   (and (<= 0 x (dec max-x)) (<= 0 y (dec max-y))))
 
 ;;================================================================================================
-;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), the closed nodes, open nodes and walls
-;; we want its neighbours.
+;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), we want its neighbours.
 ;; A neighbour is either directly above, below, left or right. Not diagonal.
-;; So map our deltas over xy then filter out the resulting points that are outwith the boundary, are already
-;; open, closed or walls.
+;; So map our deltas over xy then filter out the resulting points that are outwith the boundary.
 ;;================================================================================================
-(defn get-neighbours [[max-x max-y] xy closed open walls]
-  (let [open (set (map :cell open))
-      closed (set (map :cell closed))]
-    (set/difference (->> (map #(vec (map + xy %)) [[-1 0] [1 0] [0 -1] [0 1]])
-                         (filter (partial coord-in-grid? max-x max-y))
-                         (set))
-                    open closed walls)))
+(defn get-neighbours [[max-x max-y] xy]
+  (->> (map #(vec (map + (:cell xy) %)) [[-1 0] [1 0] [0 -1] [0 1]])
+       (filter (partial coord-in-grid? max-x max-y))))
 
 ;;================================================================================================
 ;; The heuristics function.
@@ -89,37 +124,38 @@
 ;; H: cost to move from the given cell to the goal
 ;; Return [G H]
 ;;================================================================================================
-(defn f-heuristic [[start-x start-y] [goal-x goal-y] [cur-x cur-y]]
-  [(+ (Math/abs (- cur-x start-x)) (Math/abs (- cur-y start-y)))
-   (+ (Math/abs (- cur-x goal-x)) (Math/abs (- cur-y goal-y)))])
+(defn f-heuristic [[goal-x goal-y] [cur-x cur-y] current-g]
+  [(inc current-g) (+ (Math/abs (- cur-x goal-x)) (Math/abs (- cur-y goal-y)))])
 
 ;;================================================================================================
 ;; Function to build a summary of a node.
+;; We need the cells parent (which is the current cell),
+;;         the cell to build the summary for
+;;         the goal (so the heuristics function can calculate the Manhatten Distance to the goal).
 ;; Need to return
 ;;    {:cell [x y] :parent [x y] :g n :h n :f (+ g h)}
 ;;================================================================================================
-(defn build-node-summary [start goal parent node]
-  (let [f (f-heuristic start goal node)]
-    {:cell node :parent parent :g (first f) :h (second f) :f (+ (first f) (second f))}))
+(defn build-node-summary [goal parent node]
+  (let [[g h] (f-heuristic goal node (:g parent))]
+    {node {:cell node :parent (:cell parent) :g g :h h :f (+ g h)}}))
 
 ;;================================================================================================
 ;; Get the cell with the lowest f-cost, if f-costs are tied get the cell with the lowest h cost.
 ;;================================================================================================
 (defn get-next-cell-with-lowest-f-cost [open]
-  (first (sort-by (juxt :f :h) open)))
+  (->> (map val open)
+       (sort-by (juxt :f :h))
+       (first)))
 
 ;;================================================================================================
 ;; Recursively walk backwards through the cells going from parent -> cell from goal to start
 ;; then reverse the path to get from start to goal
 ;;================================================================================================
-(defn get-path [start goal closed]
-  ((fn [current path n]
-     (if (= start (:cell current))
-       (reverse path)
-       (let [parent (first (filter #(= (:cell %) (:parent current)) closed))]
-         (recur parent (conj path (:cell parent)) (inc n)))))
-   (first (filter #(= (:cell %) goal) closed))
-   [goal] 0))
+(defn find-route [start closed route]
+  (let [parent-of-next (:parent (closed (last route)))]
+    (if (= start parent-of-next)
+      (reverse (conj route parent-of-next))
+      (recur start closed (conj route parent-of-next)))))
 
 ;;================================================================================================
 ;; Pretty print the path with arrows between nodes.
@@ -127,28 +163,61 @@
 (defn pretty-print-path [path]
   (str/join "->" path))
 
-;;================================================================================================
-;; Find the path from start to goal avoiding going through walls.
-;;================================================================================================
-(defn find-path [the-map]
-  (let [dimensions      (get-dimensions the-map)
-        start           (find-in-map the-map :s)
-        goal            (find-in-map the-map :g)
-        walls           (get-walls the-map dimensions)]
-    (loop [open #{{:cell start :parent nil :g 0 :h 0 :f 0}}
-           closed []]
-      (if (empty? open)
-        (println "no path exists.")
-        (let [current (get-next-cell-with-lowest-f-cost open)
-              cell-summary-fn (partial build-node-summary start goal (:cell current))
-              neighbours (get-neighbours dimensions (:cell current) closed open walls)]
-          (cond (= (:cell current) goal)
-                (pretty-print-path (get-path start goal (conj closed current)))
-                :else
-                (recur
-                  (set (remove #(= (:cell %) (:cell current)) (into open (map cell-summary-fn neighbours))))
-                  (conj closed current))))))))
+;;=======================================================================================================
+;; Here we want to go through each node in new and if its already in open but has a lower g score
+;; replace it, if it's not in open, just add it.
+;;=======================================================================================================
+(defn merge-with-open [open new]
+  (reduce (fn [acc i]
+            (let [new-cell (ffirst i)
+                  new-values (second (first i))
+                  existing (open new-cell)]
+              (if (some? existing)
+                  (if (or (< (:f new-values) (:f existing))
+                         (and (= (:f new-values) (:f existing))
+                              (< (:g new-values) (:g existing))))
+                    (assoc acc (existing :cell) new-values)
+                    acc)
+                  (merge acc i)))) open new))
+
+(let [open {[0 14] {:cell [0 14], :parent [0 13], :g 4, :h 7, :f 11}
+          [0 10] {:cell [0 10], :parent [0 11], :g 6, :h 3, :f 9}
+          [1 10] {:cell [1 10], :parent [1 11], :g 7, :h 2, :f 9}}
+    new '({[0 10] {:cell [0 10], :parent [1 10], :g 8, :h 3, :f 11}})]
+  (merge-with-open open new))
+
+(defn foo [acc i]
+  (println i)
+  )
+(reduce foo {} {[0 10] {:cell [0 10], :parent [1 10], :g 8, :h 3, :f 11}})
+
+(defn find-path [m]
+  (let [map-info (get-map-info m)]
+    (loop [closed {}
+           open (assoc {} (:start map-info) {:cell   (:start map-info)
+                                             :parent nil
+                                             :g      0
+                                             :h      (apply + (:goal map-info))
+                                             :f      (apply + (:goal map-info))})]
+      (cond (empty? open)
+            (println "no path exists!")
+            :else
+            (let [current (->> (get-next-cell-with-lowest-f-cost open) (debug "current: "))
+                  updated-open (as-> (get-neighbours (:dimensions map-info) current) o
+                                     (set o)
+                                     (set/difference o (set/union (:walls map-info) (set (keys closed))))
+                                     (map (partial build-node-summary (map-info :goal) current) o)
+                                     (merge-with-open open o)
+                                     (dissoc o (:cell current)))
+                  updated-closed (assoc closed (:cell current) current)]
+              (if (= (:cell current) (map-info :goal))
+                (pretty-print-path (find-route (map-info :start) updated-closed [(map-info :goal)]))
+                (recur updated-closed updated-open)))))))
 
 (comment (find-path test-map))
 (comment (find-path test-map2))
+(comment (find-path test-map3))
+(comment (find-path test-map4))
+(comment (find-path test-map5))
 (comment (find-path bad-map))
+
