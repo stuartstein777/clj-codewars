@@ -2,10 +2,6 @@
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
-(defn debug [str x]
-  (println str x)
-  x)
-
 (def bad-map
   [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
@@ -164,8 +160,11 @@
   (str/join "->" path))
 
 ;;=======================================================================================================
-;; Here we want to go through each node in new and if its already in open but has a lower g score
-;; replace it, if it's not in open, just add it.
+;; This function takes the open nodes and the candidate new nodes to add to open.
+;; A node is added to the open map if it either:
+;;    a) doesn't already exist
+;;    b) exists but candidate has lower f-cost than the existing cell
+;;    c) exists but candidate has the same f-cost than existing cell but lower g cost.
 ;;=======================================================================================================
 (defn merge-with-open [open new]
   (reduce (fn [acc i]
@@ -180,17 +179,12 @@
                     acc)
                   (merge acc i)))) open new))
 
-(let [open {[0 14] {:cell [0 14], :parent [0 13], :g 4, :h 7, :f 11}
-          [0 10] {:cell [0 10], :parent [0 11], :g 6, :h 3, :f 9}
-          [1 10] {:cell [1 10], :parent [1 11], :g 7, :h 2, :f 9}}
-    new '({[0 10] {:cell [0 10], :parent [1 10], :g 8, :h 3, :f 11}})]
-  (merge-with-open open new))
-
-(defn foo [acc i]
-  (println i)
-  )
-(reduce foo {} {[0 10] {:cell [0 10], :parent [1 10], :g 8, :h 3, :f 11}})
-
+(defn debug [text o]
+  (println text o)
+  o)
+;;=======================================================================================================
+;; The function that finds the path. Prints it out pretty printed.
+;;=======================================================================================================
 (defn find-path [m]
   (let [map-info (get-map-info m)]
     (loop [closed {}
@@ -202,7 +196,7 @@
       (cond (empty? open)
             (println "no path exists!")
             :else
-            (let [current (->> (get-next-cell-with-lowest-f-cost open) (debug "current: "))
+            (let [current (get-next-cell-with-lowest-f-cost open)
                   updated-open (as-> (get-neighbours (:dimensions map-info) current) o
                                      (set o)
                                      (set/difference o (set/union (:walls map-info) (set (keys closed))))
@@ -211,8 +205,9 @@
                                      (dissoc o (:cell current)))
                   updated-closed (assoc closed (:cell current) current)]
               (if (= (:cell current) (map-info :goal))
-                (pretty-print-path (find-route (map-info :start) updated-closed [(map-info :goal)]))
+                (find-route (map-info :start) updated-closed [(map-info :goal)])
                 (recur updated-closed updated-open)))))))
+
 
 (comment (find-path test-map))
 (comment (find-path test-map2))
@@ -221,3 +216,19 @@
 (comment (find-path test-map5))
 (comment (find-path bad-map))
 
+(let [m test-map4
+      route (find-path m)
+      dimensions (get-dimensions m)]
+  (str/join \newline (concat [(apply str (repeat (+ 2 (second dimensions)) "▓"))]
+                             (map-indexed (fn [x r]
+                                            (str "▓" (apply str (map-indexed (fn [y _]
+                                                                               (let [square [x y]
+                                                                                     map-square (nth (nth m x) y)
+                                                                                     is-route? (some #{square} route)]
+                                                                                 (cond (= map-square :w) "▓"
+                                                                                       (= map-square :s) "s"
+                                                                                       (= map-square :g) "g"
+                                                                                       is-route? "*"
+                                                                                       (= map-square :o) " "
+                                                                                       :else " "))) r)) "▓")) m)
+                             [(apply str (repeat (+ 2 (second dimensions)) "▓"))])))
