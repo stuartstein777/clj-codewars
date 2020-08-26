@@ -172,12 +172,6 @@
       (reverse (conj route parent-of-next))
       (recur start closed (conj route parent-of-next)))))
 
-;;================================================================================================
-;; Pretty print the path with arrows between nodes.
-;;================================================================================================
-(defn pretty-print-path [path]
-  (str/join "->" path))
-
 ;;=======================================================================================================
 ;; This function takes the open nodes and the candidate new nodes to add to open.
 ;; A node is added to the open map if it either:
@@ -198,11 +192,8 @@
                     acc)
                   (merge acc i)))) open new))
 
-(defn debug [text o]
-  (println text o)
-  o)
 ;;=======================================================================================================
-;; The function that finds the path. Prints it out pretty printed.
+;; The function that finds the path.
 ;;=======================================================================================================
 (defn find-path [m]
   (let [map-info (get-map-info m)]
@@ -228,13 +219,9 @@
                 (recur updated-closed updated-open)))))))
 
 
-(comment (find-path test-map))
-(comment (find-path test-map2))
-(comment (find-path test-map3))
-(comment (find-path test-map4))
-(comment (find-path test-map5))
-(comment (find-path bad-map))
-
+;;=======================================================================================================
+;; Gets the route marker so that the route is printed as a joined up line.
+;;=======================================================================================================
 (defn get-route-marker [route [y x]]
   (let [[prev-y prev-x] (nth route (dec (.indexOf route [y x])))
         [next-y next-x] (nth route (inc (.indexOf route [y x])))]
@@ -249,7 +236,10 @@
           (and (= prev-y y) (< next-y y) (< prev-x x)) "┘"
           (and (> x next-x) (= x prev-x) (< prev-y y)) "┘")))
 
-(defn get-route [m]
+;;=======================================================================================================
+;; Get the map as a string with the route drawn.
+;;=======================================================================================================
+(defn get-map-with-route [m]
   (let [route (find-path m)
         dimensions (get-dimensions m)]
     (str/join \newline (concat [(apply str (repeat (+ 2 (second dimensions)) "▓"))]
@@ -266,13 +256,20 @@
                                                                                          :else " "))) r)) "▓")) m)
                                [(apply str (repeat (+ 2 (second dimensions)) "▓"))]))))
 
+;;=======================================================================================================
+;; Prints the 2d vector representing the map.
+;;=======================================================================================================
 (defn print-map* [m]
   (println (str/join \newline (map str m))))
 
-(defn print-map-and-route [m]
+;;=======================================================================================================
+;; Print the map as a 2d vector and then print the map graphically with the route.
+;;=======================================================================================================
+(defn print-map-and-route* [m]
   (println "Map:")
   (print-map* m)
   (println "\nRoute:")
-  (println (get-route m)))
+  (println (get-map-with-route m)))
 
-(print-map-and-route test-map6)
+;; Call
+(print-map-and-route* test-map6)
