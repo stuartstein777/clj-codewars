@@ -29,6 +29,15 @@
    [:o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
 
+(def test-map2b
+  [[:g :w :o :o :o :o :o :o :o :o :o :o :o :o :o :o]
+   [:o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :o]
+   [:o :w :o :w :s :o :o :o :o :o :o :o :o :o :w :o]
+   [:o :w :o :w :w :w :w :w :w :w :w :w :w :o :w :o]
+   [:o :w :o :o :o :o :o :o :o :o :o :o :o :o :w :o]
+   [:o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o]
+   [:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]])
+
 (def test-map3
   [[:s :w :o :o :o :w :o :o :o :w :o :o :o :w :o :g]
    [:o :w :o :w :o :w :o :w :o :w :o :w :o :w :o :w]
@@ -55,6 +64,16 @@
    [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
    [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
    [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
+
+(def test-map6
+  [[:o :o :o :o :o :o :o :o :o :o :o :o :o :o :o :o]
+   [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
+   [:o :o :w :w :w :w :w :w :w :w :w :w :w :w :o :o]
+   [:o :o :w :o :o :o :o :o :o :o :o :o :o :w :w :o]
+   [:o :o :w :w :w :w :w :w :o :o :o :o :o :w :w :o]
+   [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
+   [:o :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o]])
+
 
 ;;================================================================================================
 ;; Get the dimensions of the map
@@ -106,7 +125,7 @@
   (and (<= 0 x (dec max-x)) (<= 0 y (dec max-y))))
 
 ;;================================================================================================
-;; Given a max dimensions (max-x * max-y) and a coordinate (x,y), we want its neighbours.
+;; Given a cell xy and map dimensions (max-x * max-y), we want the cells neighbours.
 ;; A neighbour is either directly above, below, left or right. Not diagonal.
 ;; So map our deltas over xy then filter out the resulting points that are outwith the boundary.
 ;;================================================================================================
@@ -216,19 +235,44 @@
 (comment (find-path test-map5))
 (comment (find-path bad-map))
 
-(let [m test-map4
-      route (find-path m)
-      dimensions (get-dimensions m)]
-  (str/join \newline (concat [(apply str (repeat (+ 2 (second dimensions)) "▓"))]
-                             (map-indexed (fn [x r]
-                                            (str "▓" (apply str (map-indexed (fn [y _]
-                                                                               (let [square [x y]
-                                                                                     map-square (nth (nth m x) y)
-                                                                                     is-route? (some #{square} route)]
-                                                                                 (cond (= map-square :w) "▓"
-                                                                                       (= map-square :s) "s"
-                                                                                       (= map-square :g) "g"
-                                                                                       is-route? "*"
-                                                                                       (= map-square :o) " "
-                                                                                       :else " "))) r)) "▓")) m)
-                             [(apply str (repeat (+ 2 (second dimensions)) "▓"))])))
+(defn get-route-marker [route [y x]]
+  (let [[prev-y prev-x] (nth route (dec (.indexOf route [y x])))
+        [next-y next-x] (nth route (inc (.indexOf route [y x])))]
+    (cond (= x next-x prev-x) "│"
+          (= y next-y prev-y) "─"
+          (and (> prev-y y) (> next-x x) (= y next-y)) "┌"
+          (and (> prev-x x) (= prev-y y) (> next-y y)) "┌"
+          (and (< prev-y y) (> next-x x) (= y next-y)) "└"
+          (and (= next-x x) (< next-y y) (> prev-x x)) "└"
+          (and (= prev-y y) (> next-y y) (< prev-x x)) "┐"
+          (and (> x next-x) (> prev-y y) (= x prev-x)) "┐"
+          (and (= prev-y y) (< next-y y) (< prev-x x)) "┘"
+          (and (> x next-x) (= x prev-x) (< prev-y y)) "┘")))
+
+(defn get-route [m]
+  (let [route (find-path m)
+        dimensions (get-dimensions m)]
+    (str/join \newline (concat [(apply str (repeat (+ 2 (second dimensions)) "▓"))]
+                               (map-indexed (fn [x r]
+                                              (str "▓" (apply str (map-indexed (fn [y _]
+                                                                                 (let [square [x y]
+                                                                                       map-square (nth (nth m x) y)
+                                                                                       is-route? (some #{square} route)]
+                                                                                   (cond (= map-square :w) "▓"
+                                                                                         (= map-square :s) "s"
+                                                                                         (= map-square :g) "g"
+                                                                                         is-route? (get-route-marker route square)
+                                                                                         (= map-square :o) " "
+                                                                                         :else " "))) r)) "▓")) m)
+                               [(apply str (repeat (+ 2 (second dimensions)) "▓"))]))))
+
+(defn print-map* [m]
+  (println (str/join \newline (map str m))))
+
+(defn print-map-and-route [m]
+  (println "Map:")
+  (print-map* m)
+  (println "\nRoute:")
+  (println (get-route m)))
+
+(print-map-and-route test-map6)
