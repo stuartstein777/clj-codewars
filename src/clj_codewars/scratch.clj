@@ -129,7 +129,10 @@
    [:o :w :o :o :o :o :w :o :w :w :o :w :o :o :o :o :o :o :o :w :w :o :w :o :w :o :o :o :o :w :w :w :o :w :o :w :o :w :o :o :w :o :o :o :o :w :o :w]
    [:w :w :w :o :w :w :w :o :o :o :o :w :o :o :w :w :o :w :o :o :o :o :w :w :w :w :o :w :o :o :w :o :o :o :o :o :o :w :w :w :w :o :o :w :o :w :w :w]
    [:o :o :o :o :o :o :w :w :o :w :w :w :w :w :w :o :o :w :w :w :o :w :w :o :o :o :o :w :o :o :o :o :o :w :o :w :o :o :o :o :o :o :g :w :o :o :o :w]])
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 ;;================================================================================================
 ;; Get the dimensions of the map.
 ;; The map is a 2d vector, so return the number of sub vectors and the length of the first sub
@@ -262,12 +265,21 @@
                   new-values (second (first i))
                   existing (open new-cell)]
               (if (some? existing)
+<<<<<<< HEAD
                 (if (or (< (:f new-values) (:f existing))
                         (and (= (:f new-values) (:f existing))
                              (< (:g new-values) (:g existing))))
                   (assoc acc (existing :cell) new-values)
                   acc)
                 (merge acc i)))) open new))
+=======
+                  (if (or (< (:f new-values) (:f existing))
+                         (and (= (:f new-values) (:f existing))
+                              (< (:g new-values) (:g existing))))
+                    (assoc acc (existing :cell) new-values)
+                    acc)
+                  (merge acc i)))) open new))
+>>>>>>> origin/master
 
 ;;=======================================================================================================
 ;; The function that finds the path.
@@ -376,6 +388,7 @@
 (print-map-and-route* test-map6)
 (print-map-and-route* test-map7)
 (print-map-and-route* test-map8)
+<<<<<<< HEAD
 (print-map-and-route* test-map9)
 
 
@@ -421,3 +434,6 @@
 
 ;; creating section from old section!
 
+=======
+(print-map-and-route* test-map9)
+>>>>>>> origin/master
