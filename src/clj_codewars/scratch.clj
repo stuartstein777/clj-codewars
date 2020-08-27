@@ -78,6 +78,57 @@
    [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o]])
 
+(def test-map7
+  [[:o :o :o :o :w :w :w :w :w :w :w :o :o :o :o :o]
+   [:w :s :w :o :w :w :o :o :o :w :w :o :w :w :o :o]
+   [:w :w :w :o :w :w :o :w :o :w :w :o :o :w :o :w]
+   [:w :w :o :o :o :o :o :w :o :o :o :o :w :w :o :g]
+   [:w :w :o :w :w :w :o :w :w :o :w :w :w :w :w :w]
+   [:w :o :o :w :w :w :o :o :o :o :o :o :o :o :o :w]
+   [:o :o :w :w :w :w :w :w :o :w :w :w :w :w :o :w]])
+
+(def test-map8
+  [[:w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w]
+   [:w :o :o :w :w :o :o :o :o :o :w :o :o :o :o :o]
+   [:w :w :w :o :o :w :o :w :o :w :w :o :o :w :o :w]
+   [:w :o :o :o :w :w :o :o :o :o :o :o :o :w :o :g]
+   [:w :s :w :o :o :o :o :w :o :w :w :w :o :w :w :w]
+   [:w :o :w :w :w :w :o :o :o :w :w :w :o :o :o :w]
+   [:o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
+
+(def test-map9
+  [[:o :w :w :w :w :w :w :w :w :o :o :w :o :o :o :w :o :w :o :w :o :o :w :w :w :w :w :w :o :o :o :w :o :o :o :w :o :o :o :o :w :w :o :w :o :o :o :o]
+   [:o :w :o :o :o :w :w :o :w :w :o :w :o :w :w :w :o :w :o :o :o :w :w :o :w :w :o :o :o :o :w :w :o :w :o :w :o :o :w :o :o :o :o :w :o :w :o :w]
+   [:w :w :w :w :o :o :o :o :w :o :o :o :o :o :o :w :o :o :o :w :o :o :w :o :o :w :o :o :w :o :o :w :o :w :o :w :w :o :w :w :w :w :w :w :o :w :o :w]
+   [:o :w :o :w :o :w :w :o :o :o :o :w :o :w :w :w :w :w :w :w :w :o :w :w :o :w :w :o :w :w :w :w :o :w :w :w :o :o :o :o :w :o :o :w :w :w :o :w]
+   [:o :o :o :o :o :w :o :s :w :o :o :w :o :o :o :w :o :o :w :o :o :o :w :o :o :w :o :o :o :o :o :o :o :o :o :o :o :w :w :o :o :o :o :w :o :w :o :o]
+   [:w :w :w :w :o :w :w :w :w :o :w :w :w :w :w :w :o :w :w :o :w :w :w :o :o :w :o :o :o :o :o :w :o :o :o :w :o :o :w :o :w :o :o :w :o :o :o :o]
+   [:o :o :w :o :o :o :w :o :w :o :o :o :w :o :o :w :o :o :o :o :o :o :w :o :w :w :w :o :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w]
+   [:o :w :w :w :w :o :w :o :w :o :w :o :w :o :o :o :o :o :w :o :o :o :w :o :o :w :o :o :w :o :o :w :o :w :o :w :o :o :w :o :o :o :w :o :w :o :o :w]
+   [:o :o :o :o :o :o :o :o :w :o :w :w :w :o :w :w :w :o :w :w :w :o :w :o :o :w :o :o :w :o :o :w :o :w :o :w :w :o :w :o :w :o :w :o :w :o :w :w]
+   [:w :o :w :w :w :o :w :w :w :o :o :o :o :o :o :w :o :o :w :o :o :o :w :o :o :o :o :w :w :w :o :w :o :o :o :w :o :o :o :o :w :o :o :o :o :o :o :o]
+   [:o :o :w :o :o :o :o :o :w :o :o :o :w :o :o :w :o :o :w :o :o :o :w :o :o :w :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w :w :w]
+   [:w :w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :o :w :o :o :o :o :o :w :o :w :o :o :w :o :o :o :o :w :o :o :o :o :o :o]
+   [:w :o :o :o :w :o :o :o :w :o :w :o :w :o :o :o :o :w :o :w :o :o :w :w :o :w :w :o :w :w :w :w :o :w :o :o :o :o :w :o :o :w :o :w :o :o :w :o]
+   [:w :w :o :o :o :o :o :o :w :o :o :o :w :o :w :o :o :o :o :o :o :w :w :o :o :w :o :o :o :w :o :w :o :w :o :o :w :o :w :w :w :w :w :w :w :o :w :w]
+   [:w :o :o :o :w :w :w :o :w :o :w :o :o :o :w :o :o :o :o :w :o :o :w :o :o :w :o :w :w :w :o :w :o :o :o :o :w :o :w :o :o :w :o :o :w :o :o :o]
+   [:w :o :w :w :w :o :w :o :o :o :w :w :o :w :w :w :w :o :w :w :w :w :w :o :w :w :o :o :o :w :o :w :w :w :o :w :w :w :w :w :w :w :o :w :w :o :w :o]
+   [:o :o :o :o :w :o :o :o :w :o :w :o :o :o :w :o :o :o :o :o :o :o :w :o :o :w :o :o :o :o :o :o :o :o :o :w :o :o :o :o :o :w :o :o :w :o :w :o]
+   [:w :w :o :w :w :w :w :w :w :o :w :o :o :o :w :w :o :w :o :w :o :o :o :o :o :w :w :w :w :o :w :w :o :o :o :o :o :o :w :o :o :o :o :o :w :o :w :o]
+   [:o :w :o :o :w :o :w :o :w :w :w :w :o :w :w :o :o :o :o :w :o :o :w :o :o :w :o :w :o :o :o :w :w :o :w :w :o :o :w :o :o :w :o :w :w :w :w :w]
+   [:o :w :o :o :o :o :w :o :w :o :o :o :o :o :w :w :w :w :o :w :w :w :w :o :w :w :o :w :o :w :o :w :o :o :o :w :o :w :w :w :w :w :o :o :w :o :w :o]
+   [:o :o :o :w :w :o :o :o :w :w :o :w :o :o :w :o :w :o :o :w :o :o :w :o :o :w :o :o :o :w :o :w :o :w :o :o :o :o :o :o :o :w :o :o :o :o :o :o]
+   [:o :w :o :o :w :o :w :o :w :o :o :w :o :o :w :o :o :o :o :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w]
+   [:w :w :w :w :w :o :w :w :w :w :w :w :w :o :w :o :w :o :o :o :o :o :w :o :o :o :o :w :o :o :w :o :o :w :o :o :o :o :w :o :w :o :o :o :o :o :w :o]
+   [:o :w :o :o :w :o :o :o :o :w :o :o :o :o :w :o :w :o :o :w :o :o :w :w :o :o :o :w :o :o :o :o :w :w :o :w :o :o :o :o :w :o :w :w :w :w :w :o]
+   [:o :w :o :w :w :o :o :o :o :w :o :o :w :o :w :w :w :w :o :w :w :o :w :w :o :w :o :w :w :o :w :o :w :w :o :w :w :w :w :o :o :o :o :o :o :o :w :o]
+   [:o :o :o :o :w :o :w :w :w :w :o :w :w :o :w :o :o :o :o :w :o :o :w :o :o :w :o :o :o :o :w :o :o :w :o :w :o :o :w :o :w :w :w :w :w :w :w :o]
+   [:o :w :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o :o :o :w :o :w :w :w :w :w :o :w :w :w :w :w :w :w :o :o :o :o :w :o :o :o :o :o :o :o :o :o]
+   [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :o :o :o :o :w :o :w :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :o :w]
+   [:o :o :o :w :o :o :o :o :o :w :o :o :o :w :w :o :o :o :o :w :o :o :w :o :w :o :o :w :o :w :o :o :o :w :o :w :o :o :o :o :w :o :o :w :o :o :o :w]
+   [:o :w :o :o :o :o :w :o :w :w :o :w :o :o :o :o :o :o :o :w :w :o :w :o :w :o :o :o :o :w :w :w :o :w :o :w :o :w :o :o :w :o :o :o :o :w :o :w]
+   [:w :w :w :o :w :w :w :o :o :o :o :w :o :o :w :w :o :w :o :o :o :o :w :w :w :w :o :w :o :o :w :o :o :o :o :o :o :w :w :w :w :o :o :w :o :w :w :w]
+   [:o :o :o :o :o :o :w :w :o :w :w :w :w :w :w :o :o :w :w :w :o :w :w :o :o :o :o :w :o :o :o :o :o :w :o :w :o :o :o :o :o :o :g :w :o :o :o :w]])
 ;;================================================================================================
 ;; Get the dimensions of the map.
 ;; The map is a 2d vector, so return the number of sub vectors and the length of the first sub
@@ -322,3 +373,6 @@
 (print-map-and-route* test-map4)
 (print-map-and-route* test-map5)
 (print-map-and-route* test-map6)
+(print-map-and-route* test-map7)
+(print-map-and-route* test-map8)
+(print-map-and-route* test-map9)
