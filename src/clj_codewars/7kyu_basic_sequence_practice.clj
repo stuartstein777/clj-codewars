@@ -14,7 +14,8 @@
 ;
 ; Your Task
 ;
-; Complete the function that takes an integer n and returns a list/array of length abs(n) + 1 of the arithmetic series explained above. Whenn < 0 return the sequence with negative terms.
+; Complete the function that takes an integer n and returns a list/array of length abs(n) + 1 of the
+; arithmetic series explained above. Whenn < 0 return the sequence with negative terms.
 ; Examples
 ;
 ;  5  -->  [0,  1,  3,  6,  10,  15]
@@ -26,3 +27,7 @@
     (if (neg? n)
       (map - abs-seq)
       abs-seq)))
+
+(defn sum-of-n [n]
+  (let [f (if (neg? n) - +)]
+    (reductions f (range (inc (Math/abs n))))))
