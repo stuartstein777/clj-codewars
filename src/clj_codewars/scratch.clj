@@ -1,6 +1,7 @@
 (ns clj-codewars.scratch
   (:require [clojure.set :as set]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clj-codewars.handy-functions :as helpers]))
 
 (defn debug [d o]
   (println d)
@@ -165,55 +166,56 @@
    [:o :o :w :o :w :o :w :w :o :o :o :w :o :w :w :w :o :o :o :o :w :w :o :o :o :w :o :o :o :o :o :o :o :o :o :w :o :w :o :o :o :o :o :o :w :o :o :g]])
 
 (def test-mapw
- [[:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :o :o :o :o :o :o :w :o :o :o :o :o :o :w :o :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :o :o :s :o :o :o :o :o :o :o :o :o :o :o :w :o :w :w :w :o :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :o :w :o :o :o :o :o :w :o :o :o :o :o :o :o :o :w :o :o :o :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :w :w :o :o :o :o :o :w :o :o :o :o :o :o :w :o :w :o :w :w :w :w :w :o :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :o :w :o :o :o :o :o :w :o :o :o :o :o :o :w :o :o :o :w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :w :o :w :o :o :o :o :o :w :w :w :w :o :o :o :w :o :w :w :w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :o :w :o :o :o :o :o :w :w :w :w :o :w :w :w :o :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :w :w :o :o :o :o :o :o :o :o :o :o :o :w :w :o :w :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w]
-  [:w :o :w :w :w :w :w :w :w :w :w :w :w :w :o :w :w :o :o :o :w :W :W :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :w :w :w :o :o :o :o :o :w :w :o :o :o :w :w :w :w :o :w :W :W :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :o :w :w :w :o :w :w :o :w :w :w :w :w :w :o :w :W :W :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :o :w :w :o :o :w :w :w :w :w :o :o :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :o :w :w :w :w :w :w :o :w :w :w :o :o :o :o :o :w :o :o :o :o :o :o :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :o :w :w :w :o :o :o :o :w :w :w :w :w :w :w :o :w :w :o :w :w :w :w :w :w :w :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :w :w :w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :w :w :w :w :w :w :w :o :o :o :w :w :w :w :w :w :w :w :w :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :w :w :w :w :w :w :w :o :w :o :w :w :w :w :w :w :w :w :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :o :o :w :w :w :w :w :o :w :o :w :w :w :w :w :w :o :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :w :o :w :w :w :w :o :o :o :o :o :w :w :w :w :w :o :w :w :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :o :w :w :o :o :o :o :o :o :o :o :w :o :w :w :w :o :o :o :o :w :o :o :o :o :w :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :o :w :w :o :w :w :w :w :o :w :o :w :w :w :w :w :o :w :w :o :w :w :w :w :w :w :o :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :o :o :o :o :o :w :w :w :w :o :w :o :o :o :o :o :o :o :w :w :o :w :w :w :w :w :w :o :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :w :w :w :o :w :w :w :w :w :o :w :o :o :o :w :w :o :w :w :w :o :w :w :w :w :o :o :o :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :o :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :o :w :w :w :o :o :w :w :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :o :o :o :o :o :w :w :w :w :o :o :o :o :g :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :w :o :o :w :w :w :o :w :w :w :o :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :w :o :w :w :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :o :o :o :o :w :w :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :o :w :w :w :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :w :w :w :w :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
-  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
+  [[:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :o :o :o :o :o :o :o :w :w :w :w :w :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :o :o :o :w :w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :o :o :w]
+  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :o :w :o :o :o :w :w :w :w :w :w :w :w :w :o :o :o :o :w :o :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :w :o :o :o :o :o :o :w :o :w :w :w :w :w :w :w :w :o :o :o :w :w :w :o :w :w :w :w :w :w :w :o :w :w :o :w :o :w :w :w]
+  [:w :w :w :o :o :o :o :o :o :w :o :o :o :o :o :o :w :o :w :w :w :o :o :o :o :o :w :w :o :w :w :w :o :w :w :w :w :w :w :w :o :w :w :o :w :o :w :w :w]
+  [:w :w :o :o :s :o :w :o :o :o :o :o :o :o :o :o :w :o :w :w :w :o :w :w :w :o :w :w :o :w :w :o :o :o :o :w :w :o :o :o :o :o :w :o :o :o :o :w :w]
+  [:w :o :o :w :o :o :w :o :o :w :o :o :o :o :o :o :o :o :w :o :o :o :w :w :w :o :w :w :o :w :w :o :w :w :o :w :w :o :o :o :o :o :w :w :w :w :o :w :w]
+  [:w :o :w :w :o :w :w :w :o :w :o :o :o :o :o :o :w :o :w :o :w :w :w :w :w :o :o :w :o :w :w :o :w :w :o :o :w :o :o :o :o :o :w :w :w :w :o :w :w]
+  [:w :o :o :w :o :o :w :o :o :w :o :o :o :o :o :o :w :o :o :o :w :w :w :w :w :w :o :w :o :w :w :o :w :w :w :o :w :o :o :o :o :o :w :w :w :w :o :w :w]
+  [:w :w :o :w :o :o :w :o :o :w :w :w :w :o :o :o :w :o :w :w :w :w :w :w :w :w :o :w :o :o :o :o :w :w :w :o :o :o :o :o :o :o :w :w :w :w :o :o :w]
+  [:w :o :o :w :o :o :o :o :o :w :w :w :w :o :w :w :w :o :w :o :o :o :o :o :o :w :o :w :w :w :o :w :w :w :w :w :w :o :o :o :o :o :o :o :w :w :w :w :w]
+  [:w :o :w :w :o :o :o :o :o :o :o :o :o :o :o :w :w :o :w :o :o :o :o :o :o :o :o :w :w :w :o :w :w :w :w :w :w :o :o :o :o :o :w :o :w :w :w :w :w]
+  [:w :o :w :w :w :w :w :w :w :w :w :w :w :w :o :w :w :o :o :o :w :W :W :o :o :w :w :w :w :w :o :w :w :w :w :w :w :w :o :w :w :w :w :o :o :o :w :w :w]
+  [:w :o :w :w :w :o :o :o :o :o :w :w :o :o :o :w :w :w :w :o :w :W :W :o :o :w :w :w :w :w :o :w :w :w :w :w :w :w :o :w :w :w :w :w :w :o :w :w :w]
+  [:w :o :o :o :o :o :w :w :w :o :w :w :o :w :w :w :w :w :w :o :w :W :W :o :o :w :w :w :w :w :o :o :o :o :w :o :o :o :o :w :w :w :w :w :w :o :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :o :w :w :o :o :w :w :w :w :w :o :o :o :o :o :o :o :o :o :o :w :w :w :o :w :w :o :w :w :w :w :w :w :w :w :w :o :w :w :w]
+  [:w :w :o :w :w :w :w :w :w :o :w :w :w :o :o :o :o :o :w :o :o :o :o :o :o :w :w :w :o :w :w :w :o :w :w :o :w :w :w :w :w :w :w :w :w :o :w :w :w]
+  [:w :w :o :w :w :w :o :o :o :o :w :w :w :w :w :w :w :o :w :w :o :w :w :w :w :w :w :w :o :o :w :w :o :w :w :o :w :w :w :w :w :w :w :w :w :o :o :o :w]
+  [:w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :w :w :o :o :o :o :w :w :w :w :w :w :w :w :o :w :w :o :o :w :o :w :w :w :w :w :o :o :o :w :o :w :o :w]
+  [:w :o :o :o :o :w :w :w :w :w :w :w :o :o :o :w :w :w :o :w :w :w :w :w :o :o :o :o :w :o :w :w :w :w :w :o :w :w :w :w :w :o :w :o :w :o :w :o :w]
+  [:w :o :o :o :o :w :w :w :w :o :w :w :o :w :o :w :w :o :o :w :w :w :w :o :o :o :o :o :w :o :w :w :w :w :w :o :o :o :o :o :o :o :w :o :o :o :w :o :w]
+  [:w :o :o :o :o :o :o :w :w :o :w :w :o :w :o :w :w :w :w :w :w :o :o :o :o :o :o :o :w :o :w :w :w :w :w :o :w :w :w :o :w :w :w :w :w :w :w :o :w]
+  [:w :o :o :o :o :w :o :w :w :o :w :o :o :o :o :o :w :w :w :w :w :o :w :w :o :o :o :o :o :o :o :o :w :w :w :o :w :w :w :o :w :w :w :w :w :w :w :o :w]
+  [:w :w :w :o :w :w :o :o :o :o :o :o :o :o :w :o :w :w :w :o :o :o :o :w :o :o :o :o :w :o :w :o :w :w :w :o :w :w :w :o :w :o :o :o :w :w :w :w :w]
+  [:w :w :w :o :w :w :o :w :o :w :w :o :w :o :w :w :w :w :w :o :w :w :o :w :w :w :w :w :w :o :w :o :o :o :o :o :o :w :w :o :o :o :w :o :w :w :w :w :w]
+  [:w :o :o :o :o :o :o :w :o :w :w :o :w :o :o :o :o :o :o :o :w :w :o :w :w :w :w :w :w :o :w :o :o :w :w :o :o :w :w :w :w :w :w :o :w :w :w :w :w]
+  [:w :o :w :w :w :o :w :w :w :w :w :o :w :o :o :o :w :w :o :w :w :w :o :w :w :w :w :o :o :o :w :o :w :w :w :w :o :w :w :w :w :w :w :o :o :o :w :w :w]
+  [:w :o :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :o :w :w :w :o :o :w :w :w :o :o :w :w :o :o :w :w :w :w :w :w :w :w :o :w :w :w]
+  [:w :w :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :o :o :o :o :o :w :w :w :w :o :o :o :o :o :o :w :w :w :w :w :w :w :w :o :w :w :w]
+  [:w :w :w :w :o :o :o :o :o :o :w :w :w :o :o :w :w :w :o :w :w :w :o :w :w :o :w :w :w :w :w :o :o :o :o :o :o :w :w :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :w :w :o :o :w :o :w :o :w :w :w :o :w :w :o :o :o :o :o :w :o :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :o :o :o :o :o :o :o :o :w :w]
+  [:w :w :w :w :o :o :o :o :o :o :o :o :o :o :w :w :o :o :o :o :o :o :o :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :w :w :o :o :w :o :w :o :w :w :o :w :w :w :o :o :o :o :o :w :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :o :o :o :o :o :o :o :o :w :w :o :o :o :o :o :o :o :o :w :w :w :w :o :o :w :w :w :w :w :w :w :w :o :o :o :o :o :o :o :o :o :o :o :o :o :w :w]
+  [:w :w :o :w :o :o :w :o :w :o :w :w :w :w :o :w :o :o :o :o :w :w :w :w :w :o :o :o :o :o :o :o :o :o :o :w :w :w :o :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :o :w :o :o :o :o :o :o :w :w :w :w :o :w :w :w :w :w :w :w :w :o :o :o :w :w :w :w :w :o :w :w :w :w :w :w :o :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :o :w :w :w :w :w :w :w :w :w :w :w :o :o :o :o :w :w :w :w :w :o :w :w :w :w :w :w :w :o :o :w :w :w :w :w :o :o :o :o :o :o :o :o :o :w :w]
+  [:w :w :o :o :o :o :o :o :o :o :w :w :w :w :w :w :w :o :w :w :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :w :o :o :o :o :o :o :w :w]
+  [:w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :o :o :o :o :o :w :w :w :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :w :w :w :w :w :w :w :o :w :w]
+  [:w :w :o :o :o :o :o :o :o :o :w :w :w :w :w :o :w :w :w :o :w :w :w :o :w :w :w :w :w :o :o :o :o :o :w :w :o :w :w :w :w :w :w :w :w :w :o :w :w]
+  [:w :w :o :w :w :w :w :w :w :w :w :w :w :w :w :o :w :o :w :o :o :o :o :o :w :w :w :w :w :o :o :o :o :o :w :w :o :w :w :w :w :w :o :o :o :o :o :o :w]
+  [:w :w :o :o :o :o :o :w :w :w :w :w :w :w :w :o :w :w :w :o :w :w :o :w :w :w :o :o :o :o :o :o :o :o :w :w :o :w :w :w :w :w :o :w :w :w :w :o :w]
+  [:w :w :w :w :w :w :o :w :w :w :w :w :w :w :w :o :o :o :o :o :w :w :o :w :w :w :o :w :w :o :o :o :o :o :o :o :o :o :o :w :w :w :o :w :w :w :w :o :w]
+  [:w :w :w :w :w :w :o :o :o :o :o :o :o :o :o :o :o :o :o :o :w :w :o :w :w :w :o :w :w :o :o :o :o :o :w :w :w :w :o :w :w :w :o :w :w :w :w :o :w]
+  [:w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :o :w :w :w :w :w :w :o :w :w :w :o :w :w :o :o :o :o :o :w :w :w :o :o :w :w :w :o :w :o :o :o :g :w]
+  [:w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :o :w :w :w :o :w :w :o :w :w :w :o :o :w :w :w :w :w :w :w :w :w :o :w :w :w :w :o :w :o :w :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :o :w :w :w :w :w :o :w :o :o :o :o :o :o :w :w :w :w :o :w :w :w :w :w :w :w :w :w :o :o :w :w :w :o :o :o :w :w :w :w]
+  [:w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :o :o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
+
 (def test-map-12
   [[:o :o :w :o :o]
    [:w :o :w :w :g]
@@ -284,7 +286,7 @@
   (and (<= 0 x (dec max-x)) (<= 0 y (dec max-y))))
 
 ;;================================================================================================
-;; Given a cell xy and map dimensions (max-x by max-y), we want the cells neighbours.
+;; Given a map containing a :cell xy and map dimensions (max-x by max-y), we want the cells neighbours.
 ;; A neighbour is either directly above, below, left or right. Not diagonal.
 ;; So map our deltas over xy then filter out the resulting points that are outwith the boundary.
 ;;================================================================================================
@@ -341,6 +343,11 @@
       (reverse (conj route parent-of-next))
       (recur start closed (conj route parent-of-next)))))
 
+(defn shorter-path? [new existing]
+  (or (< (:f new) (:f existing))
+      (and (= (:f new) (:f existing))
+           (< (:g new) (:g existing)))))
+
 ;;=======================================================================================================
 ;; This function takes the open nodes and a collection of candidate new nodes to add to open.
 ;; A node is added to the open map if it either:
@@ -354,9 +361,7 @@
                   new-values (second (first i))
                   existing (open new-cell)]
               (if (some? existing)
-                (if (or (< (:f new-values) (:f existing))
-                        (and (= (:f new-values) (:f existing))
-                             (< (:g new-values) (:g existing))))
+                (if (shorter-path? new-values existing)
                   (assoc acc (existing :cell) new-values)
                   acc)
                 (merge acc i)))) open new))
@@ -529,40 +534,11 @@
 ;; remove wall between that cell and its parent, mark all 3 as visited.
 ;; push remaining neighbours onto stack
 ;; recur with visited neighbour as current.
-(defn create-maze [max-x max-y]
-  (let [m (create-hatched-map max-x max-y)
-        start (get-random-starting-point max-x max-y)]
-    (loop [open #{}
-           visited #{}
-           m]
-
-      )))
-
-(create-maze 49 49)
 
 ;=============================================================================================================
 
-(print-map* (->> (create-hatched-map 49 49)
-                 (create-maze-from-map)))
-
-(print-map* (let [max-x 49
-                  max-y 49]
-
-              ))
-
-(print-map* (let [max-x 5
-                max-y 5
-                m (create-empty-map max-x max-y)]
-              (loop [section-stack [[[0 max-x] [max-x max-y]]]]
-                (let [split-at-x? (zero? (rand-int 2))
-                    current-section ]
-
-                  )
-                m)))
-
-
-
-
+;(print-map* (->> (create-hatched-map 49 49)
+;                 (create-maze-from-map)))
 
 (print-map* (let [max-x 5
                   max-y            5
@@ -589,3 +565,30 @@
 ;; creating section from old section!
 (print-map-and-route* test-map9)
 
+
+(defn move [s ix ixr]
+  (let [without-ix (into (subvec s 0 ix) (subvec s (inc ix)))]
+    (into (conj (into (subvec without-ix 0 ixr)) (nth s ix)) (subvec without-ix ixr))))
+
+;; 2 6 1 2 3 5 => 2 1 2 6 3 5
+(move [2 6 1 2 3 5] 1 3)
+
+(defn number->digits [num]
+  (->> num str (map (comp read-string str))))
+
+(defn pad-zeros [len xs]
+  (let [pad-length (- len (count xs))]
+    (if (zero? pad-length)
+      xs
+      (concat (repeat pad-length 0) xs))))
+
+(defn add [n1 n2]
+  (let [biggest (max (count (str n1)) (count (str n2)))
+        n1      (pad-zeros biggest (number->digits n1))
+        n2      (pad-zeros biggest (number->digits n2))]
+    (->> (map + n1 n2)
+         (map str)
+         (str/join)
+         (read-string))))
+
+(add 123 5567)
