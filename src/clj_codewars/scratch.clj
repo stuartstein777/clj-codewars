@@ -592,3 +592,80 @@
          (read-string))))
 
 (add 123 5567)
+
+
+;;============================================================================
+(defn debug [x]
+  (prn x)
+  x)
+
+(defn repeat-char-count-times [count char]
+  (apply str (repeat count char)))
+
+(defn get-lower-case-chars [s]
+  (apply str (re-seq #"[a-z]+" s)))
+
+(defn get-frequencies-of-common-chars [common-chars s]
+  (->> (frequencies s)
+       (filter (fn [i] (some common-chars i)))))
+
+;; sort order
+;; 1. length (count-a, count-b)
+;; 2. string number (a, b)
+;; 3. lexicographic (str-a, str-b)
+;; compare on count-a and count-b (this is the length),
+;; if this is the same compare on
+(defn comparer [[count-a str-a a] [count-b str-b b]]
+  (cond (= count-a count-b)
+        (cond (= a b)
+              (< (int str-a) (int str-b))
+              (> a b) 1
+              :else -1)
+        (> count-a count-b) -1
+        :else 1))
+
+(defn pre-to-string [pre]
+  (cond (= 10 pre) "=:"
+        (= 1 pre) "1:"
+        :else "2:"))
+
+(defn item-to-result-string [[count chr pre]]
+  (str (pre-to-string pre) (repeat-char-count-times count chr)))
+
+(defn char-frequencies->map [cf]
+  (zipmap (map first cf) (map second cf)))
+
+(defn mix-items2 [fs1 fs2 chr]
+  (let [fs1-count (fs1 chr 0)
+        fs2-count (fs2 chr 0)]
+    (cond (> fs1-count fs2-count) [fs1-count chr 1]
+          (= fs1-count fs2-count) [fs1-count chr 10]
+          :else [fs2-count chr 2])))
+
+(defn mix [s1 s2]
+  (let [ss1 (get-lower-case-chars s1)
+        ss2 (get-lower-case-chars s2)
+        common-chars (set/union (set ss1) (set ss2))
+        fs1 (->> (get-frequencies-of-common-chars common-chars ss1)
+                 (sort-by first)
+                 (char-frequencies->map))
+        fs2 (->> (get-frequencies-of-common-chars common-chars ss2)
+                 (sort-by first)
+                 (char-frequencies->map))]
+    (prn common-chars)
+    #_(->> (map (partial mix-items2 fs1 fs2) common-chars))
+    (->> common-chars
+         (map (partial mix-items2 fs1 fs2))
+         (filter (fn [[cnt _ _]] (> cnt 1)))
+         (sort comparer)
+         (map item-to-result-string)
+         (str/join #"/"))))
+
+(mix " In many languages" " there's a pair of functions")
+
+(= (mix "Are they here" "yes, they are here") "2:eeeee/2:yy/=:hh/=:rr")
+(= (mix "looping is fun but dangerous" "less dangerous than coding") "1:ooo/1:uuu/2:sss/=:nnn/1:ii/2:aa/2:dd/2:ee/=:gg")
+(= (mix " In many languages" " there's a pair of functions") "1:aaa/1:nnn/1:gg/2:ee/2:ff/2:ii/2:oo/2:rr/2:ss/2:tt")
+(= (mix "Lords of the Fallen" "gamekult") "1:ee/1:ll/1:oo")
+(= (mix "codewars" "codewars") "")
+(= (mix "A generation must confront the looming " "codewarrs") "1:nnnnn/1:ooooo/1:tttt/1:eee/1:gg/1:ii/1:mm/=:rr")

@@ -33,7 +33,7 @@
 
 (defn on-or-before [time requested]
   (and (or (zero? (-> time (.compareTo requested)))
-           (-> (-> requested (.isAfter time))))))
+           (-> requested (.isAfter time)))))
 
 (defn check-availability [schedule requested]
   (let [schedule (map (fn [t] [(java.time.LocalTime/parse (first t)) (java.time.LocalTime/parse (second t))]) schedule)
