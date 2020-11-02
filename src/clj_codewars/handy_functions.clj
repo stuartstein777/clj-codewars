@@ -68,7 +68,6 @@
 (defn amv [xs]
   (apply map vector xs))
 
-
 (defn bytes->num
   [data]
   (reduce bit-or (map-indexed (fn [i x] (bit-shift-left (bit-and x 0x0FF) (* 8 (- (count data) i 1)))) data)))
@@ -86,10 +85,12 @@
     (/ 1 n)))
 
 (defn factorial [n]
-  ((fn [n r]
-     (if (= 1 n)
-       r
-       (recur (dec n) (* r n)))) n 1N))
+  (apply *' (range 1 (inc n))))
+
+;; calculate binomial coefficient
+(defn binom [n k]
+  (/ (fact n)
+     (* (fact k) (fact (- n k)))))
 
 (defn decimal->ratio [dec]
   (loop [n dec
@@ -100,3 +101,4 @@
       (if (== (int (* n i)) (* n i))
         (/ (int nxi) (int dxi))
         (recur n d (* 10 i))))))
+
