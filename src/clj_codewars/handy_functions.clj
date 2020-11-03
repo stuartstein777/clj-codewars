@@ -89,8 +89,8 @@
 
 ;; calculate binomial coefficient
 (defn binom [n k]
-  (/ (fact n)
-     (* (fact k) (fact (- n k)))))
+  (/ (factorial n)
+     (* (factorial k) (factorial (- n k)))))
 
 (defn decimal->ratio [dec]
   (loop [n dec
