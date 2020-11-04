@@ -1,7 +1,10 @@
 (ns clj-codewars.scratch
   (:require [clojure.set :as set]
             [clojure.string :as str]
-            [clj-codewars.handy-functions :as helpers]))
+            [clj-codewars.handy-functions :as helpers]
+            [flow-storm.api :as fsa]))
+
+
 
 (defn debug [d o]
   (println d)
@@ -15,7 +18,7 @@
    [:o :o :w :w :w :w :w :w :o :o :o :o :o :w :w :o]
    [:o :o :o :o :o :o :o :o :o :o :s :w :o :w :o :o]
    [:o :o :o :o :o :o :o :o :o :o :o :o :o :w :o :o]])
-
+#trace
 (def test-map
   [[:o :o :o :w :o :o :o :o :o :o :o :o :o :o :o :o]
    [:o :o :o :w :g :w :o :o :o :w :o :o :w :o :o :o]
@@ -97,6 +100,7 @@
    [:w :o :w :w :w :w :o :o :o :w :w :w :o :o :o :w]
    [:o :o :w :w :w :w :w :w :w :w :w :w :w :w :w :w]])
 
+#trace
 (def test-map9
   [[:o :w :w :w :w :w :w :w :w :o :o :w :o :o :o :w :o :w :o :w :o :o :w :w :w :w :w :w :o :o :o :w :o :o :o :w :o :o :o :o :w :w :o :w :o :o :o :o]
    [:o :w :o :o :o :w :w :o :w :w :o :w :o :w :w :w :o :w :o :o :o :w :w :o :w :w :o :o :o :o :w :w :o :w :o :w :o :o :w :o :o :o :o :w :o :w :o :w]
@@ -430,6 +434,7 @@
 ;;=======================================================================================================
 ;; Get the map as a string with the route drawn.
 ;;=======================================================================================================
+#trace
 (defn get-map-with-route [m]
   (let [route (find-path m)
         [dx _] (get-dimensions m)]
@@ -451,12 +456,14 @@
 ;;=======================================================================================================
 ;; Prints the 2d vector representation of the original map.
 ;;=======================================================================================================
+#trace
 (defn print-map* [m]
   (println (str/join \newline (map str m))))
 
 ;;=======================================================================================================
 ;; Print the map as a 2d vector and then print the map graphically with the route.
 ;;=======================================================================================================
+#trace
 (defn print-map-and-route* [m]
   (println "Map:")
   (print-map* m)
@@ -464,6 +471,7 @@
   (println (get-map-with-route m)))
 
 ;; Call
+#trace
 (print-map-and-route* test-map)
 (print-map-and-route* test-map2)
 (print-map-and-route* test-map2b)
@@ -473,6 +481,7 @@
 (print-map-and-route* test-map6)
 (print-map-and-route* test-map7)
 (print-map-and-route* test-map8)
+#trace
 (print-map-and-route* test-map9)
 (print-map-and-route* test-map-10)
 (print-map-and-route* test-map-12)
@@ -539,7 +548,7 @@
 
 ;(print-map* (->> (create-hatched-map 49 49)
 ;                 (create-maze-from-map)))
-
+#trace
 (print-map* (let [max-x 5
                   max-y            5
                   five-by-five-map (create-empty-map max-x max-y)
@@ -563,109 +572,20 @@
 
 
 ;; creating section from old section!
-(print-map-and-route* test-map9)
+#trace
+(print-map-and-route* test-map)
 
 
-(defn move [s ix ixr]
-  (let [without-ix (into (subvec s 0 ix) (subvec s (inc ix)))]
-    (into (conj (into (subvec without-ix 0 ixr)) (nth s ix)) (subvec without-ix ixr))))
+#trace
+    (defn foo [a b]
+      (+ a b))
 
-;; 2 6 1 2 3 5 => 2 1 2 6 3 5
-(move [2 6 1 2 3 5] 1 3)
+#trace
+    (defn bar []
+      (let [a 10]
+        (->> (range (foo a a))
+             (map inc)
+             (filter odd?)
+             (reduce +))))
 
-(defn number->digits [num]
-  (->> num str (map (comp read-string str))))
-
-(defn pad-zeros [len xs]
-  (let [pad-length (- len (count xs))]
-    (if (zero? pad-length)
-      xs
-      (concat (repeat pad-length 0) xs))))
-
-(defn add [n1 n2]
-  (let [biggest (max (count (str n1)) (count (str n2)))
-        n1      (pad-zeros biggest (number->digits n1))
-        n2      (pad-zeros biggest (number->digits n2))]
-    (->> (map + n1 n2)
-         (map str)
-         (str/join)
-         (read-string))))
-
-(add 123 5567)
-
-
-;;============================================================================
-(defn debug [x]
-  (prn x)
-  x)
-
-(defn repeat-char-count-times [count char]
-  (apply str (repeat count char)))
-
-(defn get-lower-case-chars [s]
-  (apply str (re-seq #"[a-z]+" s)))
-
-(defn get-frequencies-of-common-chars [common-chars s]
-  (->> (frequencies s)
-       (filter (fn [i] (some common-chars i)))))
-
-;; sort order
-;; 1. length (count-a, count-b)
-;; 2. string number (a, b)
-;; 3. lexicographic (str-a, str-b)
-;; compare on count-a and count-b (this is the length),
-;; if this is the same compare on
-(defn comparer [[count-a str-a a] [count-b str-b b]]
-  (cond (= count-a count-b)
-        (cond (= a b)
-              (< (int str-a) (int str-b))
-              (> a b) 1
-              :else -1)
-        (> count-a count-b) -1
-        :else 1))
-
-(defn pre-to-string [pre]
-  (cond (= 10 pre) "=:"
-        (= 1 pre) "1:"
-        :else "2:"))
-
-(defn item-to-result-string [[count chr pre]]
-  (str (pre-to-string pre) (repeat-char-count-times count chr)))
-
-(defn char-frequencies->map [cf]
-  (zipmap (map first cf) (map second cf)))
-
-(defn mix-items2 [fs1 fs2 chr]
-  (let [fs1-count (fs1 chr 0)
-        fs2-count (fs2 chr 0)]
-    (cond (> fs1-count fs2-count) [fs1-count chr 1]
-          (= fs1-count fs2-count) [fs1-count chr 10]
-          :else [fs2-count chr 2])))
-
-(defn mix [s1 s2]
-  (let [ss1 (get-lower-case-chars s1)
-        ss2 (get-lower-case-chars s2)
-        common-chars (set/union (set ss1) (set ss2))
-        fs1 (->> (get-frequencies-of-common-chars common-chars ss1)
-                 (sort-by first)
-                 (char-frequencies->map))
-        fs2 (->> (get-frequencies-of-common-chars common-chars ss2)
-                 (sort-by first)
-                 (char-frequencies->map))]
-    (prn common-chars)
-    #_(->> (map (partial mix-items2 fs1 fs2) common-chars))
-    (->> common-chars
-         (map (partial mix-items2 fs1 fs2))
-         (filter (fn [[cnt _ _]] (> cnt 1)))
-         (sort comparer)
-         (map item-to-result-string)
-         (str/join #"/"))))
-
-(mix " In many languages" " there's a pair of functions")
-
-(= (mix "Are they here" "yes, they are here") "2:eeeee/2:yy/=:hh/=:rr")
-(= (mix "looping is fun but dangerous" "less dangerous than coding") "1:ooo/1:uuu/2:sss/=:nnn/1:ii/2:aa/2:dd/2:ee/=:gg")
-(= (mix " In many languages" " there's a pair of functions") "1:aaa/1:nnn/1:gg/2:ee/2:ff/2:ii/2:oo/2:rr/2:ss/2:tt")
-(= (mix "Lords of the Fallen" "gamekult") "1:ee/1:ll/1:oo")
-(= (mix "codewars" "codewars") "")
-(= (mix "A generation must confront the looming " "codewarrs") "1:nnnnn/1:ooooo/1:tttt/1:eee/1:gg/1:ii/1:mm/=:rr")
+(bar)
