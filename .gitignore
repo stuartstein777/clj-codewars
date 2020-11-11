@@ -10,7 +10,7 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
-
+/.clj-kondo
 # Created by https://www.toptal.com/developers/gitignore/api/intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij
 
