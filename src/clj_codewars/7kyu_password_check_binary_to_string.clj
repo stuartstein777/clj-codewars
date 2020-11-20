@@ -26,8 +26,7 @@
 
 (defn decode-pass [pass-arr bin]
   (let [password (some #{(->> (str/split bin #" ")
-                              (map decode-bin)
-                              (flatten)
+                              (mapcat decode-bin)
                               (apply str))} pass-arr)]
     (if (= nil password)
       false

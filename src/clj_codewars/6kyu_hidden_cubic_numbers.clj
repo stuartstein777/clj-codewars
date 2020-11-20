@@ -1,5 +1,5 @@
 (ns clj-codewars.6kyu-hidden-cubic-numbers
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Hidden "Cubic" Numbers
 ;

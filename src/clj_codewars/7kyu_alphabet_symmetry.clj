@@ -1,5 +1,5 @@
 (ns clj-codewars.7kyu-alphabet-symmetry
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Alphabet symmetry
 ;

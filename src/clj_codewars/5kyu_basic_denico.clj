@@ -53,7 +53,6 @@
 (defn denico [k m]
   (let [key (get-key k)
         message (partition (count key) (count key) [\space] m)]
-    (->> (map (partial decode key) message)
-         (flatten)
+    (->> (mapcat (partial decode key) message)
          (apply str)
          (str/trim))))

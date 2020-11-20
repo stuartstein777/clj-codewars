@@ -1,5 +1,5 @@
 (ns clj-codewars.6kyu-easy-balance-checking
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Easy balance checking
 ;

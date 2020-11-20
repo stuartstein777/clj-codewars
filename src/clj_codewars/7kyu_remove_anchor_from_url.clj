@@ -1,5 +1,5 @@
 (ns clj-codewars.7kyu-remove-anchor-from-url
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Remove anchor from URL
 ;

@@ -1,5 +1,5 @@
 (ns clj-codewars.7kyu-automorphic-numbers
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Automorphic Number (Special Numbers Series #6)
 ;

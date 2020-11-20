@@ -16,6 +16,5 @@
   (->> (reduce (fn [acc i]
                  (if (= \# i)
                    (vec (butlast acc))
-                   (vec (conj acc i))
-                   )) [] s)
+                   (vec (conj acc i)))) [] s)
        (str/join "")))

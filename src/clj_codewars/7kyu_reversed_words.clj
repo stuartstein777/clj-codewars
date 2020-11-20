@@ -1,5 +1,5 @@
 (ns clj-codewars.7kyu-reversed-words
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Reversed Words
 ;

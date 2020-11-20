@@ -1,5 +1,5 @@
 (ns clj-codewars.7kyu-fix-string-case
-  (require [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 ;; Fix string case
 ;
@@ -12,7 +12,7 @@
 ; For example:
 ;
 ;   solve("coDe") = "code". Lowercase characters > uppercase. Change only the "D" to lowercase.
-;   solve("CODe") = "CODE". Uppercase characters > lowecase. Change only the "e" to uppercase.
+;   solve("CODe") = "CODE". Uppercase characters > lowrecase. Change only the "e" to uppercase.
 ;   solve("coDE") = "code". Upper == lowercase. Change all to lowercase.
 
 (defn solve [s]
@@ -20,3 +20,4 @@
         l (- (count s) u)]
     (if (> u l) (str/upper-case s)
                 (str/lower-case s))))
+
