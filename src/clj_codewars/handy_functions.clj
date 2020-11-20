@@ -72,7 +72,7 @@
   [data]
   (reduce bit-or (map-indexed (fn [i x] (bit-shift-left (bit-and x 0x0FF) (* 8 (- (count data) i 1)))) data)))
 
-(defn int->ipaddress-string [n]
+(defn int->ip-address-string [n]
   (let [a (bit-and (bit-shift-right n 24) 0xFF)
         b (bit-and (bit-shift-right n 16) 0xFF)
         c (bit-and (bit-shift-right n 8) 0xFF)

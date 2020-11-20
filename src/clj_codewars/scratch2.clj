@@ -1,8 +1,11 @@
 (ns clj-codewars.scratch2
   (:require [flow-storm.api :as fs-api]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.set :as set]))
 
-(fs-api/connect)
+(defn debug [o]
+  (tap> o)
+  o)
 
 ;; todo - numbers with multiple digits
 ;; todo -- only apply numbers to the bit within parens e.g. "7(pgwh9(f)k)"

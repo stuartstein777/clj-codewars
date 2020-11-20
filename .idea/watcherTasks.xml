@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectTasksOptions">
+    <enabled-global>
+      <option value="clj-ckondo-clojure" />
+      <option value="clj-kondo-clojurescript" />
+      <option value="clj-kondo-cljc" />
+    </enabled-global>
+  </component>
+</project>
