@@ -21,7 +21,6 @@
        (reverse)
        (str/join "")))
 
-
 (solve "ukq10(x)")                                          ;ukqxxxxxxxxxx
 
 (defn is-digit [c]
